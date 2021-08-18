@@ -7,7 +7,7 @@
 
 import java.util.*;
 
-// Classe Menor parte do Grafo direcionado Ponderado
+// Classe Menor parte do Grafo Direcionado Ponderado
 class AtomGraph {
 	// Variaveis 
 	public AtomGraph prox;
@@ -16,8 +16,9 @@ class AtomGraph {
 
 	// Construtores
 	public AtomGraph(){
-		this.element = 0;
-		this.peso = 0;
+		element = 0;
+		peso = 0;
+		prox = null;
 	}
 
 	public AtomGraph(int e, int p){
@@ -27,7 +28,7 @@ class AtomGraph {
 	}
 }
 
-// Classe Grafo direcionado Ponderado Completo
+// Classe Grafo Direcionado Ponderado Completo
 class Graph{
 	// Variaveis
 	public AtomGraph[] objectGraph;
@@ -38,7 +39,7 @@ class Graph{
 	public Graph(int v){
 		this.objectGraph = new AtomGraph[v];
 		for(int i = 0; i < v; i++){
-			objectGraph[i] = new AtomGraph(i+1);
+			objectGraph[i] = new AtomGraph(i+1, 0);
 		}
 		this.vert = v;
 		this.arest = 0;
@@ -53,8 +54,8 @@ class Graph{
 		return(result);
 	}
 
-	public void inserirArests(AtomGraph a, int valor, int p){
-		AtomGraph tmp = new AtomGraph(valor, p);
+	public void inserirArests(AtomGraph a, int valor, int peso){
+		AtomGraph tmp = new AtomGraph(valor, peso);
 		boolean inserido = true;
 		for(AtomGraph i = a; inserido; i = i.prox){
 			if(i.prox == null){
@@ -110,15 +111,82 @@ class Graph{
 			for(int j = 0; j < this.vert; j++)
 				matrix[i][j] = 0;
 
-		for(int i = 0; i < this.vert; i++)
-			for(AtomGraph j = objectGraph[i].prox; j != null; j = j.prox)
-				matrix[objectGraph[i].element-1][j.element-1] = j.peso;
+		for(int i = 0; i < this.vert; i++){
+			for(AtomGraph j = objectGraph[i].prox; j != null; j = j.prox){
+				matrix[objectGraph[i].element-1][j.element-1] = 1;
+			}
+		}
 
 		System.out.println("");
 		for(int i = 0; i < this.vert; i++){
 			System.out.print("\t| ");
 			for(int j = 0; j < this.vert; j++){
 				System.out.print(matrix[i][j] + " ");
+			}
+			System.out.println("|");
+		}
+		System.out.println("");
+	}
+
+	public void printGraphMatrixPeso(){
+		int[][] matrix = new int[this.vert][this.vert];
+		for(int i = 0; i < this.vert; i++)
+			for(int j = 0; j < this.vert; j++)
+				matrix[i][j] = 0;
+
+		for(int i = 0; i < this.vert; i++){
+			for(AtomGraph j = objectGraph[i].prox; j != null; j = j.prox){
+				matrix[objectGraph[i].element-1][j.element-1] = j.peso;
+			}
+		}
+
+		System.out.println("");
+		for(int i = 0; i < this.vert; i++){
+			System.out.print("\t| ");
+			for(int j = 0; j < this.vert; j++){
+				System.out.print(matrix[i][j] + " ");
+			}
+			System.out.println("|");
+		}
+		System.out.println("");
+	}
+
+
+	public void printGraphMatrixInc(){
+		AtomGraph a = new AtomGraph(0, 0);
+		int[][] matrix = new int[this.vert][this.arest];
+		int pos = 0;
+		for(int i = 0; i < this.vert; i++)
+			for(int j = 0; j < this.arest; j++)
+				matrix[i][j] = 0;
+
+		for(int i = 0; i < this.arest; i++){
+			if(a == null){
+				++pos;
+				a = objectGraph[pos].prox;
+			}else if(a.element == 0)
+				a = objectGraph[pos].prox;
+
+			if(a != null && pos < this.vert && objectGraph[pos] != null){
+				if(objectGraph[pos].element-1 != a.element-1){
+					matrix[objectGraph[pos].element-1][i] = 1;
+					matrix[a.element-1][i] = -1;
+				} else 
+					matrix[a.element-1][i] = -2;
+				a = a.prox;
+			}
+		}
+
+		System.out.println("");
+		for(int i = 0; i < this.vert; i++){
+			System.out.print("\t| ");
+			for(int j = 0; j < this.arest; j++){
+				if(matrix[i][j] == -1)
+					System.out.print(matrix[i][j] + " ");
+				else if(matrix[i][j] == -2)
+					System.out.print(" * ");
+				else
+					System.out.print(" " + matrix[i][j] + " ");
 			}
 			System.out.println("|");
 		}
@@ -131,26 +199,34 @@ class GrafoDirecionadoPonderado {
 	public static void main(String[] args) {
 		Scanner leitor = new Scanner(System.in); // Leitor de entrada
 		int valor = -1;
+		int peso = 0;
 		System.out.print("\n\tConstruir um Grafo\n\nColoque a quatidade de vertices: ");
 		Graph g = new Graph(leitor.nextInt());
 		for(int i = 0; i < g.vert; i++){
 			System.out.println("\n\tColoque as conexoes do vertice (" + g.objectGraph[i].element + ")\n" +
-							   "OBS.: Para finalizar a insercao coloque o valor 0 (zero)");
+								 "OBS.: Para finalizar a insercao coloque o valor 0 (zero)");
 			System.out.print("---------------------------------------------------\n\tEstado inicial do vertice: ");
 			g.printVert(g.objectGraph[i]);
 			System.out.print("---------------------------------------------------\n");
 			while(valor != 0){
 				System.out.print("Coloque o valor do vertice: ");
 				valor = leitor.nextInt();
+				leitor.nextLine(); // Limpar
+				System.out.print("Coloque o peso da aresta: ");
+				peso = leitor.nextInt();
 				if(valor > 0 && valor <= g.vert)
-					g.inserirArests(g.objectGraph[i], valor);
+					g.inserirArests(g.objectGraph[i], valor, peso);
 			}
 			valor = -1;
 		}
 		System.out.println("---------------------------------------------------\nPonteiros:\n");
 		g.printGraph();
-		System.out.println("\nMatriz:");
+		System.out.println("\nMatriz (1):");
 		g.printGraphMatrix();
+		System.out.println("\nMatriz (2):");
+		g.printGraphMatrixInc();
+		System.out.println("\nMatriz (3):");
+		g.printGraphMatrixPeso();
 		System.out.print("---------------------------------------------------\n");
 	}
 }

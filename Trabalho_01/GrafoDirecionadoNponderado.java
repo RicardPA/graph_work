@@ -7,7 +7,7 @@
 
 import java.util.*;
 
-// Classe Menor parte do Grafo direcionado Nao-Ponderado
+// Classe Menor parte do Grafo Direcionado Nao-Ponderado
 class AtomGraph {
 	// Variaveis 
 	public AtomGraph prox;
@@ -24,7 +24,7 @@ class AtomGraph {
 	}
 }
 
-// Classe Grafo direcionado Nao-Ponderado Completo
+// Classe Grafo Direcionado Nao-Ponderado Completo
 class Graph{
 	// Variaveis
 	public AtomGraph[] objectGraph;
@@ -143,9 +143,8 @@ class Graph{
 				if(objectGraph[pos].element-1 != a.element-1){
 					matrix[objectGraph[pos].element-1][i] = 1;
 					matrix[a.element-1][i] = -1;
-				} else {
+				} else 
 					matrix[a.element-1][i] = -2;
-				}
 				a = a.prox;
 			}
 		}
