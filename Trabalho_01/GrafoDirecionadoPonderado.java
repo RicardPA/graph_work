@@ -10,9 +10,9 @@ import java.util.*;
 // Classe Menor parte do Grafo Direcionado Ponderado
 class AtomGraph {
 	// Variaveis 
-	public AtomGraph prox;
-	public int element;
-	public int peso;
+	public AtomGraph prox; // vertice apontado
+	public int element; // valor
+	public int peso; // peso da conexao
 
 	// Construtores
 	public AtomGraph(){
@@ -35,7 +35,7 @@ class Graph{
 	public int vert;
 	public int arest;
 
-	// Construtores
+	// Construtor
 	public Graph(int v){
 		this.objectGraph = new AtomGraph[v];
 		for(int i = 0; i < v; i++){
@@ -54,6 +54,7 @@ class Graph{
 		return(result);
 	}
 
+	// Colocar uma conexao entre dois vertices 
 	public void inserirArests(AtomGraph a, int valor, int peso){
 		AtomGraph tmp = new AtomGraph(valor, peso);
 		boolean inserido = true;
@@ -66,6 +67,7 @@ class Graph{
 		}
 	}
 
+	// Verificar para quantos vertices um vertice aponta
 	public int numConexoes(AtomGraph a){
 		int result = 0;
 		for(AtomGraph i = a.prox; i != null; i = i.prox)
@@ -73,6 +75,7 @@ class Graph{
 		return(result);
 	}
 
+	// Mostrar um vertice e suas conexoes
 	public void printVert(AtomGraph a){
 		System.out.print(a.element + " -> ");
 		if(a.prox != null){
@@ -88,6 +91,7 @@ class Graph{
 		}
 	}
 
+	// Mostrar um grafo por meio das conexoes de cada vertice
 	public void printGraph(){
 		for(int i = 0; i < this.vert; i++){
 			System.out.print("\t" + objectGraph[i].element + " -> ");
@@ -105,6 +109,7 @@ class Graph{
 		}
 	}
 
+	// Mostrar uma matrix que representa as ligacoes
 	public void printGraphMatrix(){
 		int[][] matrix = new int[this.vert][this.vert];
 		for(int i = 0; i < this.vert; i++)
@@ -128,6 +133,7 @@ class Graph{
 		System.out.println("");
 	}
 
+	// Mostrar uma matrix com os pesos da conexao
 	public void printGraphMatrixPeso(){
 		int[][] matrix = new int[this.vert][this.vert];
 		for(int i = 0; i < this.vert; i++)
@@ -151,7 +157,7 @@ class Graph{
 		System.out.println("");
 	}
 
-
+	// Mostrar uma matrix de incidencia
 	public void printGraphMatrixInc(){
 		AtomGraph a = new AtomGraph(0, 0);
 		int[][] matrix = new int[this.vert][this.arest];

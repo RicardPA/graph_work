@@ -10,8 +10,8 @@ import java.util.*;
 // Classe Menor parte do Grafo Nao-direcionado Ponderado
 class AtomGraph {
 	// Variaveis 
-	public AtomGraph prox;
-	public int element;
+	public AtomGraph prox; // Vertice apontado
+	public int element; // Valor do vertice
 	public int peso;
 
 	// Construtores
@@ -79,6 +79,7 @@ class Graph{
 		}
 	}
 
+	// Verificar para quantos vertices um vertice aponta
 	public int numConexoes(AtomGraph a){
 		int result = 0;
 		for(AtomGraph i = a.prox; i != null; i = i.prox)
@@ -86,6 +87,7 @@ class Graph{
 		return(result);
 	}
 
+	// Mostrar um vertice e suas conexoes
 	public void printVert(AtomGraph a){
 		System.out.print(a.element + " -> ");
 		if(a.prox != null){
@@ -101,6 +103,7 @@ class Graph{
 		}
 	}
 
+	// Mostrar um grafo por meio das conexoes de cada vertice
 	public void printGraph(){
 		for(int i = 0; i < this.vert; i++){
 			System.out.print("\t" + objectGraph[i].element + " -> ");
@@ -118,6 +121,7 @@ class Graph{
 		}
 	}
 
+	// Mostrar uma matrix que representa as ligacoes e o peso delas
 	public void printGraphMatrix(){
 		int[][] matrix = new int[this.vert][this.vert];
 		for(int i = 0; i < this.vert; i++)
