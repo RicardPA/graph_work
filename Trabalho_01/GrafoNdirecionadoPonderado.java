@@ -1,6 +1,6 @@
 /*
-| Materia: Teoria dos Grafos e Computabilidade 
-| Data de Entrega: 
+| Materia: Teoria dos Grafos e Computabilidade
+| Data de Entrega: 01/09/2021
 | Integrantes: Ricardo Portilho de Andrade / Hugo Souza Almeida
 | Matriculas: 705069 / 396702
 */
@@ -9,10 +9,10 @@ import java.util.*;
 
 // Classe Menor parte do Grafo Nao-direcionado Ponderado
 class AtomGraph {
-	// Variaveis 
+	// Variaveis
 	public AtomGraph prox; // Vertice apontado
 	public int element; // Valor do vertice
-	public int peso;
+	public int peso; // peso da conexao
 
 	// Construtores
 	public AtomGraph(){
@@ -44,7 +44,7 @@ class Graph{
 		this.arest = 0;
 	}
 
-	// Verificar se um vertice aponta para outro 
+	// Verificar se um vertice aponta para outro
 	public boolean pesquisarVert(AtomGraph a, int valor){
 		boolean result = false;
 		for(AtomGraph j = a.prox; j != null && !result; j = j.prox)
@@ -97,7 +97,7 @@ class Graph{
 					System.out.print("/");
 				else
 					System.out.println(";");
-			}		
+			}
 		} else{
 			System.out.println("null;");
 		}
@@ -114,7 +114,7 @@ class Graph{
 						System.out.print("/");
 					else
 						System.out.println(";");
-				}		
+				}
 			} else{
 				System.out.println("null;");
 			}
@@ -150,12 +150,16 @@ class GrafoNdirecionadoPonderado {
 		Scanner leitor = new Scanner(System.in); // Leitor de entrada
 		int valor = -1;
 		int peso = 0;
-		System.out.print("\n\tConstruir um Grafo\n\nColoque a quatidade de vertices: ");
+		System.out.print("\n\tConstruir um Grafo\n" +
+		                 "\nColoque a quatidade de vertices: ");
 		Graph g = new Graph(leitor.nextInt());
 		for(int i = 0; i < g.vert; i++){
-			System.out.println("\n\tColoque as conexoes do vertice (" + g.objectGraph[i].element + ")\n" +
-							   "OBS.: Para finalizar a insercao coloque o valor 0 (zero) nas entradas");
-			System.out.print("---------------------------------------------------\n\tEstado inicial do vertice: ");
+			System.out.println("\n\tColoque as conexoes do vertice ("
+			                   + g.objectGraph[i].element + ")\n" +
+							           "OBS.: Para finalizar a insercao coloque o valor 0 " +
+												 "(zero) nas entradas");
+			System.out.print("---------------------------------------------------\n" +
+			                 "\tEstado inicial do vertice: ");
 			g.printVert(g.objectGraph[i]);
 			System.out.print("---------------------------------------------------\n");
 			while(valor != 0){
@@ -169,7 +173,8 @@ class GrafoNdirecionadoPonderado {
 			}
 			valor = -1;
 		}
-		System.out.println("---------------------------------------------------\nPonteiros:\n");
+		System.out.println("---------------------------------------------------\n" +
+		                   "Ponteiros:\n");
 		g.printGraph();
 		System.out.println("\nMatriz:");
 		g.printGraphMatrix();
